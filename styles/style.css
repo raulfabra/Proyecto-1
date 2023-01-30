@@ -4,10 +4,13 @@
 }
 
 body {
-    background-color: black;
+    background-color: white;
 }
 
 
 canvas {
     border: 2px solid rgb(211, 6, 6);
 }
+
+
+

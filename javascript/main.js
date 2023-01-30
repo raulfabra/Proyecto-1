@@ -4,17 +4,21 @@ const ctx = canvas.getContext("2d");
 const background = new Image();
 background.src = "imagenes/bkg.png";
 
+
 let navePlayer = document.createElement("img");
 navePlayer.src = "imagenes/player1.png";
+
 
 let naveEnemiga = document.createElement ("img");
 naveEnemiga.src = "imagenes/player1.png";
 
 
+
+
 window.addEventListener("load",() =>{
     class Player {
         constructor (){
-            this.posX = 5;
+            this.posX = 50;
             this.posY = 460;
             this.width = 100;
             this.height = 100;
@@ -41,11 +45,11 @@ window.addEventListener("load",() =>{
 
     class Enemies {
         constructor (){
-            this.posX = canvas.width - 150;
-            this.posY = canvas.height / 2; //Math.floor(Math.random * canvas.height)
+            this.posX = canvas.width +10;
+            this.posY = Math.floor(Math.random() * canvas.height)
             this.width = 100;
             this.height = 100;
-            this.velocidadPos = 10;
+            this.velocidadPos = 5;
             //this.velocidadDisp = 'valor';
         }
 
@@ -109,17 +113,16 @@ window.addEventListener("load",() =>{
             }
             this.enemies.forEach((enemie) => {
                 enemie.move();
-            })
-                /*
+            
                 if (!(
-                    this.player1.x + this.player1.width < enemie.x ||
-                    this.player1.x > enemie.x + enemie.width ||
-                    this.player1.y > enemie.y + enemie.height ||
-                    this.player1.y + this.player1.height < enemie.y
+                    this.player1.posX + this.player1.width < enemie.posX ||
+                    this.player1.posX > enemie.posX + enemie.width ||
+                    this.player1.posY > enemie.posY + enemie.height ||
+                    this.player1.posY + this.player1.height < enemie.posY
                 )){ 
                     this.end()
                 }
-            })*/
+            })
         }
 
 
