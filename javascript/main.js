@@ -1,0 +1,119 @@
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext("2d");
+
+const background = new Image();
+background.src = "imagenes/bkg.png";
+
+let navePlayer = document.createElement("img");
+navePlayer.src = "imagenes/player1.png";
+
+let naveEnemiga = document.createElement ("img");
+naveEnemiga.src = "";
+
+
+window.addEventListener("load",() =>{
+    class Player {
+        constructor (){
+            this.posX = 5;
+            this.posY = 460;
+            this.width = 100;
+            this.height = 100;
+            this.velocidadPos = 30;
+            //this.velocidadDisp = 'valor';
+        }
+        print(){
+            ctx.drawImage (navePlayer, this.posX, this.posY, this.width, this.height)
+        }
+
+        moveUp(){
+            this.posY -= this.velocidadPos;
+            if (this.posY < 0) return this.posY = 0;
+        }
+        moveDown(){
+            this.posY += this.velocidadPos;
+            if (this.posY > (canvas.height-this.height)) return this.posY = canvas.height - this.height;
+        }
+        
+
+        shot(){}
+
+    }
+
+    class enemies {
+        constructor (posX,posY){
+            this.posX = posX;
+            this.posY = posY;
+            this.width = 'valor';
+            this.height = 'valor';
+            this.velocidadPos = 'valor';
+            this.velocidadDisp = 'valor';
+        }
+
+        print(){
+            ctx.drawImage()
+        }
+
+        move(){}
+
+        shot(){}
+
+    }
+
+    class Game{
+        constructor (){
+            this.player1 = new Player();
+            this.player1.print()
+            this.enemies = [];
+            this.score = 0;
+            this.intervalId = undefined;
+            this.iteracion = 0;
+        }
+
+        start(){
+            if(this.intervalId == undefined) {
+                this.intervalId = setInterval(()=>{
+                  this.iteracion ++;
+                  //borra
+                  this.clear();
+                  //recalcula + genera obstaculos
+                  //this.recalculate();
+                  //pinta
+                  this.print();
+                }, 20);
+              }
+        }
+
+        end(){
+            if(this.intervalId) clearInterval(this.intervalId);
+        }
+
+        clear(){
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+        }
+
+        print(){
+            ctx.drawImage(background,0,0,canvas.width, canvas.height)
+            this.player1.print()
+        }
+
+        recalcular(){}
+
+
+    }
+
+    let partida = new Game();
+
+    partida.start();
+
+    document.getElementsByTagName("body")[0].addEventListener("keydown",(event) => {
+        switch(event.key){
+          case "ArrowUp":
+            partida.player1.moveUp()
+            break;
+          case "ArrowDown":
+            partida.player1.moveDown()
+            break;
+        }
+      })
+
+})
