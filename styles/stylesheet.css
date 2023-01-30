@@ -8,7 +8,7 @@ html{
 }
 
 body{
-    background-image: url("/imagenes/maxresdefault_3ddb.jpg");
+    background-image: url("/imagenes/pantallainicio.jpg");
     background-repeat: no-repeat;
     background-size: cover;
 
@@ -42,7 +42,7 @@ p{
 .menu-game {
     margin: 50px;
     padding: 50px;
-    background-color: white;
+    /*background-color: white;*/
     text-align: center;
 }
 

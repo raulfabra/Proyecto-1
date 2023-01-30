@@ -8,7 +8,7 @@ let navePlayer = document.createElement("img");
 navePlayer.src = "imagenes/player1.png";
 
 let naveEnemiga = document.createElement ("img");
-naveEnemiga.src = "";
+naveEnemiga.src = "imagenes/player1.png";
 
 
 window.addEventListener("load",() =>{
@@ -39,21 +39,23 @@ window.addEventListener("load",() =>{
 
     }
 
-    class enemies {
-        constructor (posX,posY){
-            this.posX = posX;
-            this.posY = posY;
-            this.width = 'valor';
-            this.height = 'valor';
-            this.velocidadPos = 'valor';
-            this.velocidadDisp = 'valor';
+    class Enemies {
+        constructor (){
+            this.posX = canvas.width - 150;
+            this.posY = canvas.height / 2; //Math.floor(Math.random * canvas.height)
+            this.width = 100;
+            this.height = 100;
+            this.velocidadPos = 10;
+            //this.velocidadDisp = 'valor';
         }
 
         print(){
-            ctx.drawImage()
+            ctx.drawImage(naveEnemiga, this.posX, this.posY, this.width, this.height)
         }
 
-        move(){}
+        move(){
+            this.posX -= this.velocidadPos
+        }
 
         shot(){}
 
@@ -62,7 +64,7 @@ window.addEventListener("load",() =>{
     class Game{
         constructor (){
             this.player1 = new Player();
-            this.player1.print()
+            this.player1.print();
             this.enemies = [];
             this.score = 0;
             this.intervalId = undefined;
@@ -76,7 +78,7 @@ window.addEventListener("load",() =>{
                   //borra
                   this.clear();
                   //recalcula + genera obstaculos
-                  //this.recalculate();
+                  this.recalcular();
                   //pinta
                   this.print();
                 }, 20);
@@ -94,9 +96,31 @@ window.addEventListener("load",() =>{
         print(){
             ctx.drawImage(background,0,0,canvas.width, canvas.height)
             this.player1.print()
+            this.enemies.forEach((enemie) => {
+                enemie.print();
+            })
         }
 
-        recalcular(){}
+        recalcular(){
+            if (this.iteracion == 70){
+                let enemigo1 = new Enemies()
+                this.enemies.push(enemigo1)
+                this.iteracion = 0
+            }
+            this.enemies.forEach((enemie) => {
+                enemie.move();
+            })
+                /*
+                if (!(
+                    this.player1.x + this.player1.width < enemie.x ||
+                    this.player1.x > enemie.x + enemie.width ||
+                    this.player1.y > enemie.y + enemie.height ||
+                    this.player1.y + this.player1.height < enemie.y
+                )){ 
+                    this.end()
+                }
+            })*/
+        }
 
 
     }
