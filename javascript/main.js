@@ -109,14 +109,7 @@ window.addEventListener("load",() =>{
             }
             this.enemies.forEach((enemie) => {
                 enemie.move();
-                /*if (!(
-                    this.player1.x + this.player1.width < enemie.x ||
-                    this.player1.x > enemie.x + enemie.width ||
-                    this.player1.y > enemie.y + enemie.height ||
-                    this.player1.y + this.player1.height < enemie.y
-                )){ 
-                    this.end()
-                }*/
+                
             })
         }
 
