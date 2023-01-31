@@ -12,5 +12,11 @@ canvas {
     border: 2px solid rgb(211, 6, 6);
 }
 
+h1{
+    color: brown;
+    text-align: center;
+    background-color: transparent;
+}
+
 
 
