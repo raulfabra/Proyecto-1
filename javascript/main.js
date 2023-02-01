@@ -16,16 +16,17 @@ naveEnemiga001.src = "imagenes/enemigo1.png";
 let naveEnemiga003 = document.createElement ("img");
 naveEnemiga003.src = "imagenes/enemigo3.png"
 
-
+let explotion = document.createElement("img");
+explotion.src = "imagenes/explosion.png"
 
 
 window.addEventListener("load",() =>{
     class Player {
         constructor (){
-            this.posX = 50;
-            this.posY = 460;
             this.width = 100;
             this.height = 100;
+            this.posX = this.width;
+            this.posY = (canvas.height / 2) - (this.height / 2);
             this.velocidadPos = 30;
             //this.velocidadDisp = 'valor';
         }
@@ -35,15 +36,15 @@ window.addEventListener("load",() =>{
 
         moveUp(){
             this.posY -= this.velocidadPos;
-            if (this.posY < 0) return this.posY = 0;
+            if (this.posY < 0) this.posY = 0;
         }
         moveDown(){
             this.posY += this.velocidadPos;
             if (this.posY > (canvas.height-this.height)) return this.posY = canvas.height - this.height;
         }
         
-        bala(){
-
+        dirShotPlayer(){
+            this.posX += 5
         }
 
     }
@@ -55,78 +56,60 @@ window.addEventListener("load",() =>{
             this.width = 90;
             this.height = 90;
             this.velocidadPos = 2;
-            /* this.fire = []; */
             this.imagen = archivo;
-            //this.velocidadDisp = 'valor';
+
         }
 
         print(){
-            ctx.drawImage(this.imagen, this.posX, this.posY, this.width, this.height);
-            //pintar balas tambien
-            
+            ctx.drawImage(this.imagen, this.posX, this.posY, this.width, this.height);            
 
         }
 
         move(){
             this.posX -= this.velocidadPos;
-            /* this.fire.forEach(bala => { //Recorrer array balas y moure
-                bala.move()
-            })  */
+
         }
 
-        /*crearBala(){
-            let bala = new Shot(this.posX, this.posY + (this.height/2));
-            //this.fire.push(bala);
+        dead(muerte){
+            let identificador = setInterval(() => {
+                ctx.drawImage(muerte, this.posX, this.posY, this.width, this.height);
+            },20)
+            
+            setTimeout(() => {
+                clearInterval(identificador)
+            },900);
 
-            /*this.fire.forEach(bala => {
-                bala.move()
-                bala.print()
-               // bala.clear();
-            }) */
-        //}
-
-        /* clear(){
-            setInterval(() => {
-                ctx.clearRect(this.posX, this.posY + (this.height/2))
-            }, 20);
-        }*/
+        }
 
     }
     class Shot {
-        constructor(x,y){
+        constructor(x,y,color){
             this.posX = x
             this.posY = y
             this.radio = 5
             this.startAngle = 0
             this.endAngle = 2 * Math.PI
-            this.velocidadX = 5
+            this.velocidadX = 10
             this.velocidadY = 25
-            this.contadorBalas = 0;
+            this.color = color
+            //this.contadorBalas = 0;
         }
+
         print(){
             
             ctx.beginPath();
-            ctx.fillStyle = "red";
+            ctx.fillStyle = this.color;
             ctx.fill(ctx.arc(this.posX, this.posY, this.radio, this.startAngle, this.endAngle));
             ctx.stroke();
-            let count = 50;
-            let identificador = setInterval(() => {
-                ctx.beginPath();
-                ctx.fillStyle = "red";
-                ctx.fill(ctx.arc((this.posX + count), this.posY, this.radio, this.startAngle, this.endAngle));
-                ctx.stroke();
-                count += 50
-            },1000)
-
-            setTimeout(()=>{
-                clearInterval(identificador)
-            },3000)
         } 
 
-        move(){
+        moveLeft(){
             this.posX -= this.velocidadX
             //this.posY -= this.velocidadY
+        }
 
+        moveRight(){
+            this.posX += this.velocidadX; 
         }
     }
 
@@ -138,6 +121,7 @@ window.addEventListener("load",() =>{
             this.fire = [];
             this.firePlayer = [];
             this.score = 0;
+            this.live = 5;
             this.intervalId = undefined;
             this.iteracion = 0;
             this.contadorBalas = 0;
@@ -147,10 +131,6 @@ window.addEventListener("load",() =>{
             if(this.intervalId == undefined) {
                 this.intervalId = setInterval(()=>{
                   this.iteracion ++;
-                  //this.contadorBalas ++;
-                  //this.contadorBalas++;
-                  //console.log(this.iteracion)
-                  //console.log(this.contadorBalas)
                   
                   //borra
                   this.clear();
@@ -158,12 +138,13 @@ window.addEventListener("load",() =>{
                   this.recalcular();                  
                   //pinta
                   this.print();
-                }, 20);
+                }, 33);
               }
         }
 
         end(){
             if(this.intervalId) clearInterval(this.intervalId);
+            
         }
 
         clear(){
@@ -173,75 +154,108 @@ window.addEventListener("load",() =>{
         print(){
             ctx.drawImage(background,0,0,canvas.width, canvas.height)
             this.player1.print()
+            //this.bala002.print()
             this.enemies.forEach((enemie) => {
                 enemie.print();
             })
             this.fire.forEach(bala => {
                 bala.print()
-                
             })
-            
-
+            this.firePlayer.forEach(bala => {
+                bala.print()
+            })
 
         }
 
         recalcular(){
 
-            /* if(this.interacion % 20){
-                this.enemies.forEach(enemie => {
-                    let bala011 = new Shot(enemie.posX, enemie.posY);
-                    this.fire.push(bala011)
-                }) 
-                
-            }*/
-            if (this.iteracion == 200){
+            if (this.iteracion == 100){
                 let enemigo1 = new Enemies(naveEnemiga001);
                 this.enemies.push(enemigo1);
-                let bala1 = new Shot(enemigo1.posX, enemigo1.posY);
-                this.fire.push(bala1)
-                
-                /* this.fire.forEach((bala) => {
-                    bala.crearBala()
-                    this.fire.push(bala)
-
-                }) */
 
             }
-            
-            if(this.iteracion == 350){
+            if (this.iteracion == 105){
+                this.enemies.forEach(enemie => {
+                    let bala1 = new Shot(enemie.posX, enemie.posY + (enemie.height/2),"red")
+                    this.fire.push(bala1)
+                })
+            }
+            if(this.iteracion == 140){
                 let enemigo3 = new Enemies(naveEnemiga003);
                 this.enemies.push(enemigo3);
-                let bala3 = new Shot(enemigo3.posX, enemigo3.posY);
-                this.fire.push(bala3)
-                /* this.fire.forEach((bala) => {
-                    bala.crearBala()
-                }) */
+            }
+
+            if (this.iteracion == 120){
+                this.enemies.forEach(enemie => {
+                    let bala2 = new Shot(enemie.posX, enemie.posY + (enemie.height/2),"red")
+                    this.fire.push(bala2)
+                })
+            }
+            if (this.iteracion == 180){
+                this.enemies.forEach(enemie => {
+                    let bala3 = new Shot(enemie.posX, enemie.posY + (enemie.height/2),"red")
+                    this.fire.push(bala3)
+                })
+            }
+            
+            if(this.iteracion == 300){
                 this.iteracion = 0
             }
             
+
+
             this.enemies.forEach((enemie) => {
                 enemie.move();
 
                 if (!(
-                    this.player1.posX + this.player1.width < enemie.posX + 20||
-                    this.player1.posX - 8 > enemie.posX + enemie.width ||
-                    this.player1.posY + 20 > enemie.posY + enemie.height ||
-                    this.player1.posY + this.player1.height <= enemie.posY + 20
+                    this.player1.posX + this.player1.width < enemie.posX + 25||
+                    this.player1.posX - 15 > enemie.posX + enemie.width ||
+                    this.player1.posY + 25 > enemie.posY + enemie.height ||
+                    this.player1.posY + this.player1.height <= enemie.posY + 25
                 )){ 
+                    console.log("1")
                     this.end()
                 }
+
             })
-            this.fire.forEach(bala => {
-                bala.move()
+            this.fire.forEach((bala,i) => {
+                bala.moveLeft();
+
+                if (!(
+                    this.player1.posY + this.player1.height /4 > bala.posY + (bala.radio*2) ||
+                    this.player1.posX + this.player1.width < bala.posX ||
+                    bala.posY > this.player1.posY + this.player1.height * 3/4||
+                    bala.posX + (bala.radio*2) < this.player1.posX
+                )){
+                    //console.log("2")
+                    delete(this.fire[i])
+                    this.live -= 1;
+                    console.log(this.live)
+                    if (this.live == 0){
+                        this.end()
+
+                    }
+                }
             })
-            
-            /* if (this.contadorBalas == 500){
-                this.enemies.forEach((enemie) => {
-                    enemie.bala();
+
+            this.firePlayer.forEach((bala,k) => {
+                bala.moveRight();
+                this.enemies.forEach((enemie,i) => {
+                    if (!(
+                        enemie.posY > bala.posY + (bala.radio*2)/4 ||
+                        enemie.posX + enemie.width < bala.posX ||
+                        bala.posY > enemie.posY + enemie.height ||
+                        bala.posX + (bala.radio*2)< enemie.posX
+                    )){
+                        console.log("3")
+                        delete(this.enemies[i]);
+                        enemie.dead(explotion)
+                        this.firePlayer.splice(k,4)
+
+                    }
                 })
-                this.contadorBalas = 0;
-              } */
-            
+                
+            })
         }
 
         score(){
@@ -257,6 +271,7 @@ window.addEventListener("load",() =>{
     partida.start();
 
     document.getElementsByTagName("body")[0].addEventListener("keydown",(event) => { //console.log(event.offsetX)
+        console.log(event.key)
         switch(event.key){
           case "ArrowUp":
             partida.player1.moveUp()
@@ -264,8 +279,9 @@ window.addEventListener("load",() =>{
           case "ArrowDown":
             partida.player1.moveDown()
             break;
-            case "a":
-            partida.player1.shot()
+            case " ":
+            let bala001 = new Shot(partida.player1.posX + partida.player1.width, partida.player1.posY + partida.player1.height/2,"green")
+            partida.firePlayer.push(bala001)
             break;
         }
       })
