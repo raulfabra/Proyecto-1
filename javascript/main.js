@@ -1,9 +1,12 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext("2d");
 
+/* const audio = new Audio("imagenes/bso.mp3");
+audio.play(); */
+
 
 const background = new Image();
-background.src = "imagenes/bkg.png";
+background.src = "imagenes/galaxia1.jpg";
 
 
 let navePlayer = document.createElement("img");
@@ -40,6 +43,14 @@ window.addEventListener("load",() =>{
         moveDown(){
             this.posY += this.velocidadPos;
             if (this.posY > (canvas.height-this.height)) return this.posY = canvas.height - this.height;
+        }
+        moveLeft(){
+            this.posX -= this.velocidadPos;
+            if (this.posX < this.width ) this.posX = this.width
+        }
+        moveRight(){
+            this.posX += this.velocidadPos;
+            if (this.posX > (canvas.width/2 - this.width)) this.posX = canvas.width/2 - this.width;
         }
         
         dirShotPlayer(){
@@ -135,7 +146,7 @@ window.addEventListener("load",() =>{
                   this.recalcular();                  
                   //pinta
                   this.print();
-                }, 33);
+                }, 28);
               }
         }
 
@@ -256,14 +267,14 @@ window.addEventListener("load",() =>{
         }
 
         score(){
-            document.querySelector("#scoreKeeper span").innerHTML = `${this.personalScore}`;
-            if (this.personalScore == 1500){
+            document.querySelector(".datos span").innerHTML = `${this.personalScore}`;
+            if (this.personalScore == 10000){
                 this.end()
             }
 
         }
         life(){
-            document.querySelector("#vida span").innerHTML = `${this.live}`;
+            document.querySelector(".vidas span").innerHTML = `${this.live}`;
             if (this.live == 0){
                 this.end()
             }
@@ -286,13 +297,18 @@ window.addEventListener("load",() =>{
           case "ArrowDown":
             partida.player1.moveDown()
             break;
-            case " ":
+          case "ArrowLeft":
+            partida.player1.moveLeft()
+            break;
+          case "ArrowRight":
+            partida.player1.moveRight()
+            break;
+          case " ":
             let bala001 = new Shot(partida.player1.posX + partida.player1.width, partida.player1.posY + partida.player1.height/2,"green")
             partida.firePlayer.push(bala001)
             break;
         }
       })
     
-      document.querySelector("#scoreKeeper span").innerHTML = `${partida.personalScore}`;
 
 })

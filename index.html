@@ -10,22 +10,24 @@
 <body>
     <main>
         <h1>BATTLE IN SPACE</h1>
+        <button id="sound">sound</button>
 
         <section class = "menu-game">
             <div id = "formulario">
-                <label for="name">Name Player :</label>
-                <input type="text" value="name" id="name" placeholder="Your name">
+                <label for="name">Name Player : </label>
+                <input type="text" id="name" placeholder="Your name">
             </div>
             <div id = "start-game">
                 <button id="button" > Start Game </button>
             </div>
+
         </section>
     </main>
 
     <div id="game-board">
         <div id="titulos">
-        <h1 class="datos">Score: <span>0</span></h1>
-        <h1 class="datos">Live: <span>5</span></h2>
+            <h1 class="vidas">Life &nbsp  <span>5</span></h2>
+            <h1 class="datos">Score &nbsp <span>0</span></h1>
         </div>
 
         <canvas id="canvas" width="1800" height="800">
