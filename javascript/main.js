@@ -1,9 +1,9 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext("2d");
 
+
 const background = new Image();
 background.src = "imagenes/bkg.png";
-
 
 
 let navePlayer = document.createElement("img");
@@ -28,7 +28,6 @@ window.addEventListener("load",() =>{
             this.posX = this.width;
             this.posY = (canvas.height / 2) - (this.height / 2);
             this.velocidadPos = 30;
-            //this.velocidadDisp = 'valor';
         }
         print(){
             ctx.drawImage (navePlayer, this.posX, this.posY, this.width, this.height)
@@ -92,7 +91,6 @@ window.addEventListener("load",() =>{
             this.velocidadX = 10
             this.velocidadY = 25
             this.color = color
-            //this.contadorBalas = 0;
         }
 
         print(){
@@ -105,7 +103,6 @@ window.addEventListener("load",() =>{
 
         moveLeft(){
             this.posX -= this.velocidadX
-            //this.posY -= this.velocidadY
         }
 
         moveRight(){
@@ -120,7 +117,7 @@ window.addEventListener("load",() =>{
             this.enemies = [];
             this.fire = [];
             this.firePlayer = [];
-            this.score = 0;
+            this.personalScore = 0;
             this.live = 5;
             this.intervalId = undefined;
             this.iteracion = 0;
@@ -169,18 +166,18 @@ window.addEventListener("load",() =>{
 
         recalcular(){
 
-            if (this.iteracion == 100){
+            if (this.iteracion == 70){
                 let enemigo1 = new Enemies(naveEnemiga001);
                 this.enemies.push(enemigo1);
 
             }
-            if (this.iteracion == 105){
+            if (this.iteracion == 100){
                 this.enemies.forEach(enemie => {
                     let bala1 = new Shot(enemie.posX, enemie.posY + (enemie.height/2),"red")
                     this.fire.push(bala1)
                 })
             }
-            if(this.iteracion == 140){
+            if(this.iteracion == 100){
                 let enemigo3 = new Enemies(naveEnemiga003);
                 this.enemies.push(enemigo3);
             }
@@ -198,7 +195,7 @@ window.addEventListener("load",() =>{
                 })
             }
             
-            if(this.iteracion == 300){
+            if(this.iteracion == 182){
                 this.iteracion = 0
             }
             
@@ -213,7 +210,7 @@ window.addEventListener("load",() =>{
                     this.player1.posY + 25 > enemie.posY + enemie.height ||
                     this.player1.posY + this.player1.height <= enemie.posY + 25
                 )){ 
-                    console.log("1")
+            
                     this.end()
                 }
 
@@ -230,11 +227,8 @@ window.addEventListener("load",() =>{
                     //console.log("2")
                     delete(this.fire[i])
                     this.live -= 1;
-                    console.log(this.live)
-                    if (this.live == 0){
-                        this.end()
-
-                    }
+                    this.life()
+                    
                 }
             })
 
@@ -247,10 +241,13 @@ window.addEventListener("load",() =>{
                         bala.posY > enemie.posY + enemie.height ||
                         bala.posX + (bala.radio*2)< enemie.posX
                     )){
-                        console.log("3")
+                    
                         delete(this.enemies[i]);
-                        enemie.dead(explotion)
-                        this.firePlayer.splice(k,4)
+                        enemie.dead(explotion);
+                        this.firePlayer.splice(k,2);
+                        this.personalScore += 100;
+                        
+                        this.score()
 
                     }
                 })
@@ -259,15 +256,25 @@ window.addEventListener("load",() =>{
         }
 
         score(){
-            let record = document.getElementById('scoreKeeper').innerHTML;
-            //if (){ return record += 100}
-        };
+            document.querySelector("#scoreKeeper span").innerHTML = `${this.personalScore}`;
+            if (this.personalScore == 1500){
+                this.end()
+            }
+
+        }
+        life(){
+            document.querySelector("#vida span").innerHTML = `${this.live}`;
+            if (this.live == 0){
+                this.end()
+            }
+        }
     }
 
 
 
     let partida = new Game();
-
+    
+    
     partida.start();
 
     document.getElementsByTagName("body")[0].addEventListener("keydown",(event) => { //console.log(event.offsetX)
@@ -285,6 +292,7 @@ window.addEventListener("load",() =>{
             break;
         }
       })
-
+    
+      document.querySelector("#scoreKeeper span").innerHTML = `${partida.personalScore}`;
 
 })
