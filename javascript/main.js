@@ -1,9 +1,8 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext("2d");
 
-/* const audio = new Audio("imagenes/bso.mp3");
-audio.play(); */
-
+const audio = new Audio("imagenes/bso.mp3");
+audio.play();
 
 const background = new Image();
 background.src = "imagenes/galaxia1.jpg";
@@ -24,6 +23,11 @@ explotion.src = "imagenes/explosion.png"
 
 
 window.addEventListener("load",() =>{
+    let pulsador = false;
+    document.getElementById("game-board").style.display = "none";
+    document.querySelector("main").style.display = "block";
+    
+
     class Player {
         constructor (){
             this.width = 100;
@@ -281,12 +285,24 @@ window.addEventListener("load",() =>{
         }
     }
 
-
-
     let partida = new Game();
     
+    document.getElementById("button").addEventListener('click',()=>{
+        pulsador = true
+        if (pulsador == true){
+            document.querySelector("main").style.display = "none";
+            document.getElementById("game-board").style.display = "block";
+            partida.start();
+            pulsador = false;
+      }
+    })
+
+    document.getElementById("sound").addEventListener('click', ()=>{
+        if (pulsador == false) audio.pause();
+        else audio.play();
+    })
+
     
-    partida.start();
 
     document.getElementsByTagName("body")[0].addEventListener("keydown",(event) => { //console.log(event.offsetX)
         console.log(event.key)
@@ -310,5 +326,5 @@ window.addEventListener("load",() =>{
         }
       })
     
-
+      
 })
