@@ -1,25 +1,33 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext("2d");
 
+
 const background = new Image();
 background.src = "imagenes/bkg.png";
+
 
 let navePlayer = document.createElement("img");
 navePlayer.src = "imagenes/player1.png";
 
-let naveEnemiga = document.createElement ("img");
-naveEnemiga.src = "imagenes/player1.png";
+
+let naveEnemiga001 = document.createElement ("img");
+naveEnemiga001.src = "imagenes/enemigo1.png";
+
+let naveEnemiga003 = document.createElement ("img");
+naveEnemiga003.src = "imagenes/enemigo3.png"
+
+let explotion = document.createElement("img");
+explotion.src = "imagenes/explosion.png"
 
 
 window.addEventListener("load",() =>{
     class Player {
         constructor (){
-            this.posX = 5;
-            this.posY = 460;
             this.width = 100;
             this.height = 100;
+            this.posX = this.width;
+            this.posY = (canvas.height / 2) - (this.height / 2);
             this.velocidadPos = 30;
-            //this.velocidadDisp = 'valor';
         }
         print(){
             ctx.drawImage (navePlayer, this.posX, this.posY, this.width, this.height)
@@ -27,38 +35,79 @@ window.addEventListener("load",() =>{
 
         moveUp(){
             this.posY -= this.velocidadPos;
-            if (this.posY < 0) return this.posY = 0;
+            if (this.posY < 0) this.posY = 0;
         }
         moveDown(){
             this.posY += this.velocidadPos;
             if (this.posY > (canvas.height-this.height)) return this.posY = canvas.height - this.height;
         }
         
-
-        shot(){}
+        dirShotPlayer(){
+            this.posX += 5
+        }
 
     }
 
     class Enemies {
-        constructor (){
-            this.posX = canvas.width - 150;
-            this.posY = canvas.height / 2; //Math.floor(Math.random * canvas.height)
-            this.width = 100;
-            this.height = 100;
-            this.velocidadPos = 10;
-            //this.velocidadDisp = 'valor';
+        constructor (archivo){
+            this.posX = canvas.width +10;
+            this.posY = Math.floor(Math.random() * (canvas.height - 100))
+            this.width = 90;
+            this.height = 90;
+            this.velocidadPos = 2;
+            this.imagen = archivo;
+
         }
 
         print(){
-            ctx.drawImage(naveEnemiga, this.posX, this.posY, this.width, this.height)
+            ctx.drawImage(this.imagen, this.posX, this.posY, this.width, this.height);            
+
         }
 
         move(){
-            this.posX -= this.velocidadPos
+            this.posX -= this.velocidadPos;
+
         }
 
-        shot(){}
+        dead(muerte){
+            let identificador = setInterval(() => {
+                ctx.drawImage(muerte, this.posX, this.posY, this.width, this.height);
+            },20)
+            
+            setTimeout(() => {
+                clearInterval(identificador)
+            },900);
 
+        }
+
+    }
+    class Shot {
+        constructor(x,y,color){
+            this.posX = x
+            this.posY = y
+            this.radio = 5
+            this.startAngle = 0
+            this.endAngle = 2 * Math.PI
+            this.velocidadX = 10
+            this.velocidadY = 25
+            this.color = color
+        }
+
+        print(){
+            
+            ctx.beginPath();
+            ctx.fillStyle = this.color;
+            ctx.fill(ctx.arc(this.posX, this.posY, this.radio, this.startAngle, this.endAngle));
+            ctx.stroke();
+        } 
+
+        moveLeft(){
+            this.posX -= this.velocidadX
+        }
+
+        moveRight(){
+            this.posX += this.velocidadX; 
+        }
     }
 
     class Game{
@@ -66,27 +115,33 @@ window.addEventListener("load",() =>{
             this.player1 = new Player();
             this.player1.print();
             this.enemies = [];
-            this.score = 0;
+            this.fire = [];
+            this.firePlayer = [];
+            this.personalScore = 0;
+            this.live = 5;
             this.intervalId = undefined;
             this.iteracion = 0;
+            this.contadorBalas = 0;
         }
 
         start(){
             if(this.intervalId == undefined) {
                 this.intervalId = setInterval(()=>{
                   this.iteracion ++;
+                  
                   //borra
                   this.clear();
                   //recalcula + genera obstaculos
-                  this.recalcular();
+                  this.recalcular();                  
                   //pinta
                   this.print();
-                }, 20);
+                }, 33);
               }
         }
 
         end(){
             if(this.intervalId) clearInterval(this.intervalId);
+            
         }
 
         clear(){
@@ -96,31 +151,134 @@ window.addEventListener("load",() =>{
         print(){
             ctx.drawImage(background,0,0,canvas.width, canvas.height)
             this.player1.print()
+            //this.bala002.print()
             this.enemies.forEach((enemie) => {
                 enemie.print();
             })
+            this.fire.forEach(bala => {
+                bala.print()
+            })
+            this.firePlayer.forEach(bala => {
+                bala.print()
+            })
+
         }
 
         recalcular(){
+
             if (this.iteracion == 70){
-                let enemigo1 = new Enemies()
-                this.enemies.push(enemigo1)
+                let enemigo1 = new Enemies(naveEnemiga001);
+                this.enemies.push(enemigo1);
+
+            }
+            if (this.iteracion == 100){
+                this.enemies.forEach(enemie => {
+                    let bala1 = new Shot(enemie.posX, enemie.posY + (enemie.height/2),"red")
+                    this.fire.push(bala1)
+                })
+            }
+            if(this.iteracion == 100){
+                let enemigo3 = new Enemies(naveEnemiga003);
+                this.enemies.push(enemigo3);
+            }
+
+            if (this.iteracion == 120){
+                this.enemies.forEach(enemie => {
+                    let bala2 = new Shot(enemie.posX, enemie.posY + (enemie.height/2),"red")
+                    this.fire.push(bala2)
+                })
+            }
+            if (this.iteracion == 180){
+                this.enemies.forEach(enemie => {
+                    let bala3 = new Shot(enemie.posX, enemie.posY + (enemie.height/2),"red")
+                    this.fire.push(bala3)
+                })
+            }
+            
+            if(this.iteracion == 182){
                 this.iteracion = 0
             }
+            
+
+
             this.enemies.forEach((enemie) => {
                 enemie.move();
+
+                if (!(
+                    this.player1.posX + this.player1.width < enemie.posX + 25||
+                    this.player1.posX - 15 > enemie.posX + enemie.width ||
+                    this.player1.posY + 25 > enemie.posY + enemie.height ||
+                    this.player1.posY + this.player1.height <= enemie.posY + 25
+                )){ 
+            
+                    this.end()
+                }
+
+            })
+            this.fire.forEach((bala,i) => {
+                bala.moveLeft();
+
+                if (!(
+                    this.player1.posY + this.player1.height /4 > bala.posY + (bala.radio*2) ||
+                    this.player1.posX + this.player1.width < bala.posX ||
+                    bala.posY > this.player1.posY + this.player1.height * 3/4||
+                    bala.posX + (bala.radio*2) < this.player1.posX
+                )){
+                    //console.log("2")
+                    delete(this.fire[i])
+                    this.live -= 1;
+                    this.life()
+                    
+                }
+            })
+
+            this.firePlayer.forEach((bala,k) => {
+                bala.moveRight();
+                this.enemies.forEach((enemie,i) => {
+                    if (!(
+                        enemie.posY > bala.posY + (bala.radio*2)/4 ||
+                        enemie.posX + enemie.width < bala.posX ||
+                        bala.posY > enemie.posY + enemie.height ||
+                        bala.posX + (bala.radio*2)< enemie.posX
+                    )){
+                    
+                        delete(this.enemies[i]);
+                        enemie.dead(explotion);
+                        this.firePlayer.splice(k,2);
+                        this.personalScore += 100;
+                        
+                        this.score()
+
+                    }
+                })
                 
             })
         }
 
+        score(){
+            document.querySelector("#scoreKeeper span").innerHTML = `${this.personalScore}`;
+            if (this.personalScore == 1500){
+                this.end()
+            }
 
+        }
+        life(){
+            document.querySelector("#vida span").innerHTML = `${this.live}`;
+            if (this.live == 0){
+                this.end()
+            }
+        }
     }
 
-    let partida = new Game();
 
+
+    let partida = new Game();
+    
+    
     partida.start();
 
-    document.getElementsByTagName("body")[0].addEventListener("keydown",(event) => {
+    document.getElementsByTagName("body")[0].addEventListener("keydown",(event) => { //console.log(event.offsetX)
+        console.log(event.key)
         switch(event.key){
           case "ArrowUp":
             partida.player1.moveUp()
@@ -128,7 +286,13 @@ window.addEventListener("load",() =>{
           case "ArrowDown":
             partida.player1.moveDown()
             break;
+            case " ":
+            let bala001 = new Shot(partida.player1.posX + partida.player1.width, partida.player1.posY + partida.player1.height/2,"green")
+            partida.firePlayer.push(bala001)
+            break;
         }
       })
+    
+      document.querySelector("#scoreKeeper span").innerHTML = `${partida.personalScore}`;
 
 })

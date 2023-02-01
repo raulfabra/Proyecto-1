@@ -8,8 +8,29 @@
     <link rel="stylesheet" href="./styles/style.css">
 </head>
 <body>
+    <main>
+        <h1>BATTLE IN SPACE</h1>
+
+        <section class = "menu-game">
+            <div id = "formulario">
+                <label for="name">Name Player :</label>
+                <input type="text" value="name" id="name" placeholder="Your name">
+            </div>
+            <div id = "start-game">
+                <button id="button" > Start Game </button>
+            </div>
+        </section>
+    </main>
+
     <div id="game-board">
-        <canvas id="canvas" width="1820" height="921"></canvas>
+        <div id="titulos">
+        <h1 class="datos">Score: <span>0</span></h1>
+        <h1 class="datos">Live: <span>5</span></h2>
+        </div>
+
+        <canvas id="canvas" width="1800" height="800">
+
+        </canvas>
     </div>
     
     <script src="./javascript/main.js"></script>

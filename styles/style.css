@@ -3,11 +3,79 @@
     padding: 0;
 }
 
-body {
-    background-color: black;
+html{
+    font-size: 20px;
 }
 
+main{
+    margin: 100px;
+}
+
+body {
+    background-image: url('/imagenes/pantallainicio.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+h1{
+    margin: auto;
+    padding: auto;
+    text-align: center;
+    width: 400px;
+    color: #77e913;
+    font-size: 4rem;
+}
+
+.menu-game {
+    margin: 50px;
+    padding: 50px;
+    /*background-color: white;*/
+    text-align: center;
+}
+
+#formulario{
+    display: flex;
+    align-items: center;
+    text-align: end;
+    height: 40px;
+    background-color: white;
+}
+#name{
+    text-align: center;
+}
+
+
+body > div > div {
+    display: flex;
+    justify-content: space-around;
+}
+h2{
+    color: brown;
+}
+
+
+div{
+    background-size: ;
+    text-align: center;
+}
+
+h1.datos{
+    margin: 10px;
+    padding: 10px;
+}
 
 canvas {
     border: 2px solid rgb(211, 6, 6);
 }
+
+h1{
+    color: brown;
+    text-align: center;
+    background-color: transparent;
+}
+
+#game-board{
+    display: none
+}
+
+
