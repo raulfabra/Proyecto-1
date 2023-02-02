@@ -15,7 +15,7 @@
         <section class = "menu-game">
             <div id = "formulario">
                 <label for="name">Name Player : </label>
-                <input type="text" id="name" placeholder="Your name">
+                <input type="text" id="name" value="" placeholder="Your name">
             </div>
             <div id = "start-game">
                 <button id="button" > Start Game </button>
@@ -26,13 +26,15 @@
 
     <div id="game-board">
         <div id="titulos">
-            <h1 class="vidas">Life &nbsp  <span>5</span></h2>
+            <h1 class="vidas">Life &nbsp  <span>5</span></h1>
+            <p id="restart"> RESTART </p>
             <h1 class="datos">Score &nbsp <span>0</span></h1>
         </div>
+        <img src ="imagenes/coins.gif" id="coins">
+        <img src ="imagenes/soyprogramador.gif" id="maquina" width="400px" height="250px">
+        <canvas id="canvas" width="1800" height="800"></canvas>
+        
 
-        <canvas id="canvas" width="1800" height="800">
-
-        </canvas>
     </div>
     
     <script src="./javascript/main.js"></script>

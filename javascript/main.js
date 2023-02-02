@@ -11,7 +11,6 @@ background.src = "imagenes/galaxia1.jpg";
 let navePlayer = document.createElement("img");
 navePlayer.src = "imagenes/player1.png";
 
-
 let naveEnemiga001 = document.createElement ("img");
 naveEnemiga001.src = "imagenes/enemigo1.png";
 
@@ -21,19 +20,21 @@ naveEnemiga003.src = "imagenes/enemigo3.png"
 let explotion = document.createElement("img");
 explotion.src = "imagenes/explosion.png"
 
+let youWin = document.createElement("img");
+youWin.src = "imagenes/win.png";
 
-/* let gameOver = document.createElement("img");
+let gameOver = document.createElement("img");
 gameOver.src = "imagenes/game-over.png"
-
-let enemigoFinal = document.createElement("img");
-enemigoFinal.src = "imagenes/darkvader.png" */
 
 
 window.addEventListener("load",() =>{
     let pulsador = false;
+    
     document.getElementById("game-board").style.display = "none";
     document.querySelector("main").style.display = "block";
-    
+    document.getElementById("restart").style.display = "none";
+    document.getElementById("coins").style.display = "none";
+    document.getElementById("maquina").style.display = "none";
 
     class Player {
         constructor (){
@@ -147,6 +148,16 @@ window.addEventListener("load",() =>{
         }
 
         start(){
+            this.player1 = new Player();
+            this.player1.print();
+            this.enemies = [];
+            this.fire = [];
+            this.firePlayer = [];
+            this.personalScore = 0;
+            this.live = 5;
+            this.intervalId = undefined;
+            this.iteracion = 0;
+
             if(this.intervalId == undefined) {
                 this.intervalId = setInterval(()=>{
                   this.iteracion ++;
@@ -195,7 +206,7 @@ window.addEventListener("load",() =>{
             }
             if (this.iteracion == 100){
                 this.enemies.forEach(enemie => {
-                    let bala1 = new Shot(enemie.posX, enemie.posY + (enemie.height/2),"red")
+                    let bala1 = new Shot(enemie.posX, enemie.posY + (enemie.height/2),"#FF5733")
                     this.fire.push(bala1)
                 })
             }
@@ -206,13 +217,13 @@ window.addEventListener("load",() =>{
 
             if (this.iteracion == 120){
                 this.enemies.forEach(enemie => {
-                    let bala2 = new Shot(enemie.posX, enemie.posY + (enemie.height/2),"red")
+                    let bala2 = new Shot(enemie.posX, enemie.posY + (enemie.height/2),"#FF5733")
                     this.fire.push(bala2)
                 })
             }
             if (this.iteracion == 180){
                 this.enemies.forEach(enemie => {
-                    let bala3 = new Shot(enemie.posX, enemie.posY + (enemie.height/2),"red")
+                    let bala3 = new Shot(enemie.posX, enemie.posY + (enemie.height/2),"#FF5733")
                     this.fire.push(bala3)
                 })
             }
@@ -241,7 +252,8 @@ window.addEventListener("load",() =>{
                     this.player1.posY + 25 > enemie.posY + enemie.height ||
                     this.player1.posY + this.player1.height <= enemie.posY + 25
                 )){ 
-            
+                    this.live = 0;
+                    this.life();
                     this.end()
                 }
 
@@ -289,6 +301,14 @@ window.addEventListener("load",() =>{
         score(){
             document.querySelector(".datos span").innerHTML = `${this.personalScore}`;
             if (this.personalScore == 10000){
+                document.getElementById("maquina").style.display = "block"
+                let identificador = setInterval(() => {
+                    ctx.drawImage(youWin, 400 , 120, 900, 600);
+                },20)
+                
+                setTimeout(() => {
+                    clearInterval(identificador)
+                },800);
                 this.end()
             }
 
@@ -296,6 +316,18 @@ window.addEventListener("load",() =>{
         life(){
             document.querySelector(".vidas span").innerHTML = `${this.live}`;
             if (this.live == 0){
+                
+                document.getElementById("coins").style.display = "block"
+                document.getElementById("restart").style.display = "block"
+               
+                let identificador = setInterval(() => {
+                    ctx.drawImage(gameOver, 400 , 120, 900, 700);
+                },20)
+                
+                setTimeout(() => {
+                    clearInterval(identificador)
+                },800);
+
                 this.end()
             }
         }
@@ -318,6 +350,16 @@ window.addEventListener("load",() =>{
         else audio.play();
     })
 
+
+    document.getElementById("restart").addEventListener('click', ()=>{
+        document.getElementById("coins").style.display = "none";
+        ctx.clearRect(0,0, ctx.canvas.width, ctx.canvas.height);
+        partida.start();
+        document.querySelector(".vidas span").innerHTML = `${partida.live}`;
+        document.querySelector(".datos span").innerHTML = `${partida.personalScore}`
+        
+
+    })
     
 
     document.getElementsByTagName("body")[0].addEventListener("keydown",(event) => { //console.log(event.offsetX)
@@ -335,7 +377,7 @@ window.addEventListener("load",() =>{
             partida.player1.moveRight()
             break;
           case " ":
-            let bala001 = new Shot(partida.player1.posX + partida.player1.width, partida.player1.posY + partida.player1.height/2,"green")
+            let bala001 = new Shot(partida.player1.posX + partida.player1.width, partida.player1.posY + partida.player1.height/2,"#09FF00")
             partida.firePlayer.push(bala001)
             break;
         }

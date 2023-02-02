@@ -111,7 +111,8 @@ main > h1{
     justify-content: space-around;
 }
 .datos,
-.vidas {
+.vidas,
+#restart {
     color: brown;
     text-shadow: -1px 0 rgb(255, 255, 255), 0 1px rgb(255, 255, 255), 1px 0 rgb(255, 255, 255), 0 -1px rgb(255, 255, 255);
     margin: 10px;
@@ -125,3 +126,17 @@ main > h1{
 }
 
 
+#restart{
+    font-size: 1.3rem;
+    cursor: grab;
+}
+
+#coins,
+#maquina {
+    position: absolute;
+    left: 700px;
+    top: 120px;
+}
+
+#maquina {
+}
