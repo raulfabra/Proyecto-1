@@ -1,8 +1,6 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext("2d");
 
-const audio = new Audio("imagenes/bso.mp3");
-audio.play();
 
 const background = new Image();
 background.src = "imagenes/galaxia1.jpg";
@@ -65,9 +63,6 @@ window.addEventListener("load",() =>{
             if (this.posX > (canvas.width/2 - this.width)) this.posX = canvas.width/2 - this.width;
         }
         
-        dirShotPlayer(){
-            this.posX += 5
-        }
 
     }
 
@@ -302,6 +297,8 @@ window.addEventListener("load",() =>{
             document.querySelector(".datos span").innerHTML = `${this.personalScore}`;
             if (this.personalScore == 1000){
                 document.getElementById("maquina").style.display = "block"
+                document.getElementById("restart").style.display = "block"
+
                 let identificador = setInterval(() => {
                     ctx.drawImage(youWin, 400 , 120, 900, 600);
                 },20)
@@ -344,15 +341,20 @@ window.addEventListener("load",() =>{
             pulsador = false;
       }
     })
+    const audio = new Audio("imagenes/bso.mp3");
 
-    document.getElementById("sound").addEventListener('click', ()=>{
+    document.getElementById("soundon").addEventListener('click', ()=>{
+        if (pulsador == false) audio.play();
+    })
+
+    document.getElementById("soundoff").addEventListener('click', ()=>{
         if (pulsador == false) audio.pause();
-        else audio.play();
     })
 
 
     document.getElementById("restart").addEventListener('click', ()=>{
         document.getElementById("coins").style.display = "none";
+        document.getElementById("maquina").style.display = "none";
         ctx.clearRect(0,0, ctx.canvas.width, ctx.canvas.height);
         partida.start();
         document.querySelector(".vidas span").innerHTML = `${partida.live}`;

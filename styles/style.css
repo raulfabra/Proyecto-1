@@ -10,7 +10,7 @@ html{
 }
 
 body {
-    background-image: url('/pantallainicio.jpg');
+    background-image: url('/imagenes/fondoProyecto1.png');
     background-repeat: no-repeat;
     background-size: cover;
     font-family: Georgia, 'Times New Roman', Times, serif;
@@ -30,19 +30,33 @@ main > h1{
     font-size: 4rem;
 }
 
-#sound:hover{
-    background-color: #77e913;
+#soundoff:hover{
+    background-color: rgb(194, 191, 191);
     color: black;
     cursor: grab;
 }
-#sound{
+#soundon:hover{
+    background-color: rgb(194, 191, 191);
+    color: black;
+    cursor: grab;
+}
+#soundoff{
+    margin: 20px;
+    padding: 20px;
+    position: absolute;
+    top: 210px;
+    border-radius: 100%;
+    background-color: #f30000;
+    
+}
+#soundon{
     margin: 20px;
     padding: 20px;
     position: absolute;
     top: 100px;
     border-radius: 100%;
     border-bottom-color: #77e913;
-    background-color: rgb(194, 191, 191);
+    background-color: #428606;
     
 
 }
