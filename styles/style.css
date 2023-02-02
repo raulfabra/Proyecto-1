@@ -10,7 +10,7 @@ html{
 }
 
 body {
-    background-image: url('../imagenes/fondoProyecto1.png');
+    background-image: url('../fondo.png');
     background-repeat: no-repeat;
     background-size: cover;
     font-family: Georgia, 'Times New Roman', Times, serif;
@@ -99,8 +99,6 @@ main > h1{
     border-color: white;
 }
 
-#start-game{}
-
 #button:hover{
     background-color: #77e913;
     cursor: grab;
@@ -150,7 +148,4 @@ main > h1{
     position: absolute;
     left: 700px;
     top: 120px;
-}
-
-#maquina {
 }
