@@ -300,7 +300,7 @@ window.addEventListener("load",() =>{
 
         score(){
             document.querySelector(".datos span").innerHTML = `${this.personalScore}`;
-            if (this.personalScore == 10000){
+            if (this.personalScore == 1000){
                 document.getElementById("maquina").style.display = "block"
                 let identificador = setInterval(() => {
                     ctx.drawImage(youWin, 400 , 120, 900, 600);
