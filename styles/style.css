@@ -10,7 +10,7 @@ html{
 }
 
 body {
-    background-image: url('imagenes/fondoProyecto1.png');
+    background-image: url('../imagenes/fondoProyecto1.png');
     background-repeat: no-repeat;
     background-size: cover;
     font-family: Georgia, 'Times New Roman', Times, serif;
