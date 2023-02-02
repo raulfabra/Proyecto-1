@@ -22,6 +22,13 @@ let explotion = document.createElement("img");
 explotion.src = "imagenes/explosion.png"
 
 
+/* let gameOver = document.createElement("img");
+gameOver.src = "imagenes/game-over.png"
+
+let enemigoFinal = document.createElement("img");
+enemigoFinal.src = "imagenes/darkvader.png" */
+
+
 window.addEventListener("load",() =>{
     let pulsador = false;
     document.getElementById("game-board").style.display = "none";
@@ -136,14 +143,15 @@ window.addEventListener("load",() =>{
             this.live = 5;
             this.intervalId = undefined;
             this.iteracion = 0;
-            this.contadorBalas = 0;
+           // this.subirDificultad = 0;
         }
 
         start(){
             if(this.intervalId == undefined) {
                 this.intervalId = setInterval(()=>{
                   this.iteracion ++;
-                  
+                 // this.subirDificultad ++;
+                 // console.log(this.subirDificultad)
                   //borra
                   this.clear();
                   //recalcula + genera obstaculos
@@ -156,7 +164,6 @@ window.addEventListener("load",() =>{
 
         end(){
             if(this.intervalId) clearInterval(this.intervalId);
-            
         }
 
         clear(){
@@ -213,7 +220,16 @@ window.addEventListener("load",() =>{
             if(this.iteracion == 182){
                 this.iteracion = 0
             }
-            
+            //BONUS DIFICULTAD DE JUEGO
+            /* if(this.subirDificultad == 2500){
+                let n = 0
+                while (n < 6){
+                    let darkvader = new Enemies(enemigoFinal);
+                    this.enemies.push(darkvader)
+                }
+                this.subirDificultad = 0;
+            } */
+
 
 
             this.enemies.forEach((enemie) => {
@@ -305,7 +321,6 @@ window.addEventListener("load",() =>{
     
 
     document.getElementsByTagName("body")[0].addEventListener("keydown",(event) => { //console.log(event.offsetX)
-        console.log(event.key)
         switch(event.key){
           case "ArrowUp":
             partida.player1.moveUp()
